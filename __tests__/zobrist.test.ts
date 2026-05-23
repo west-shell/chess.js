@@ -1,14 +1,10 @@
+// Zobrist 哈希测试
 import { Chess, xoroshiro128 } from '../src/chess'
 import { expect, test } from 'vitest'
 
-// Very basic hash tests, more extensive testing is done as part of the move and load pgn tests.
-
-test('rand', () => {
+test('rand - 随机数生成器验证', () => {
   const rand = xoroshiro128(0xa187eb39cdcaed8f31c4b365b102e01en)
-
   const results = Array.from({ length: 5 }, () => rand().toString(16))
-
-  // values take from reference implementation
   expect(results).toEqual([
     'c9c4700ec0b2a75c',
     'ce613bcab5ad7ec2',
@@ -18,19 +14,16 @@ test('rand', () => {
   ])
 })
 
-test('hash is the same for the same position', () => {
+test('hash - 相同局面产生相同哈希值', () => {
   const a = new Chess()
   const b = new Chess()
-
   expect(a.hash()).toEqual(b.hash())
 })
 
-test('hash is different for different positions', () => {
+test('hash - 不同局面产生不同哈希值', () => {
   const a = new Chess()
-  a.move('e4')
-
+  a.move('b0c2')
   const b = new Chess()
-  b.move('d4')
-
+  b.move('h0g2')
   expect(a.hash()).not.toEqual(b.hash())
 })

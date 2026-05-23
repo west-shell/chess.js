@@ -1,14 +1,22 @@
+// 撤销着法测试
 import { Chess } from '../src/chess'
 import { expect, test } from 'vitest'
 
-test('undo - works', () => {
+test('undo - 基本撤销', () => {
   const chess = new Chess()
 
-  chess.move('e4')
-  chess.move('e5')
-  expect(chess.undo()?.san).toEqual('e5')
-  expect(chess.undo()?.san).toEqual('e4')
+  chess.move('b0c2')
+  chess.move('b9a7')
+  expect(chess.undo()?.san).toBe('b9a7')
+  expect(chess.undo()?.san).toBe('b0c2')
   expect(chess.undo()).toBeNull()
+})
 
+test('undo - 撤销后局面恢复', () => {
+  const chess = new Chess()
+  const startFen = chess.fen()
+
+  chess.move('b0c2')
   chess.undo()
+  expect(chess.fen()).toBe(startFen)
 })

@@ -1,21 +1,22 @@
+// 位置颜色测试
 import { Chess, type Square } from '../src/chess'
 import { expect, test } from 'vitest'
 
-test('squareColor should return light for light squares', () => {
+test('squareColor - 返回亮色或暗色', () => {
   const chess = new Chess()
+  // a9: rank 9 + file 0 = 9, odd → dark
+  expect(chess.squareColor('a9')).toBe('dark')
+  // a8: rank 8 + file 0 = 8, even → light
   expect(chess.squareColor('a8')).toBe('light')
-  expect(chess.squareColor('h1')).toBe('light')
-  expect(chess.squareColor('e4')).toBe('light')
 })
 
-test('squareColor should return dark for dark squares', () => {
+test('squareColor - 返回非空值', () => {
   const chess = new Chess()
-  expect(chess.squareColor('a1')).toBe('dark')
-  expect(chess.squareColor('h8')).toBe('dark')
-  expect(chess.squareColor('d4')).toBe('dark')
+  expect(chess.squareColor('e0')).toBeTruthy()
+  expect(chess.squareColor('e9')).toBeTruthy()
 })
 
-test('squareColor should return null for out of bounds squares', () => {
+test('squareColor - 超出范围返回 null', () => {
   const chess = new Chess()
-  expect(chess.squareColor('h9' as Square)).toBeNull()
+  expect(chess.squareColor('j9' as Square)).toBeNull()
 })

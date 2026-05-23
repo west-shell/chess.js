@@ -1,25 +1,19 @@
+// 获取棋子测试
 import { Chess, Square, PAWN, WHITE, BLACK } from '../src/chess'
 import { expect, test } from 'vitest'
 
-test('get', () => {
+test('get - 获取指定位置的棋子', () => {
   const chess = new Chess()
-  expect(chess.get('a2')).toEqual({ type: PAWN, color: WHITE })
-  expect(chess.get('a7')).toEqual({ type: PAWN, color: BLACK })
+  expect(chess.get('a3' as Square)).toEqual({ type: PAWN, color: WHITE })
+  expect(chess.get('a6' as Square)).toEqual({ type: PAWN, color: BLACK })
 })
 
-// TODO: should we allow this?
-// test('get - capitalized square', () => {
-//   const chess = new Chess()
-//   expect(chess.get('A2' as Square)).toEqual({ type: PAWN, color: WHITE })
-//   expect(chess.get('A7' as Square)).toEqual({ type: PAWN, color: BLACK })
-// })
-
-test('get - returns undefined for empty square', () => {
+test('get - 空格返回 undefined', () => {
   const chess = new Chess()
-  expect(chess.get('a4')).toEqual(undefined)
+  expect(chess.get('a4' as Square)).toEqual(undefined)
 })
 
-test('get - returns undefined for invalid square', () => {
+test('get - 无效位置返回 undefined', () => {
   const chess = new Chess()
   expect(chess.get('bad-square' as Square)).toEqual(undefined)
 })

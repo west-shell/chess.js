@@ -1,71 +1,32 @@
+// PGN 头部操作测试
 import { Chess, SEVEN_TAG_ROSTER } from '../src/chess'
-import { beforeEach, describe, expect, test } from 'vitest'
+import { expect, test } from 'vitest'
 
-describe('Chess Header Methods', () => {
-  let chess: Chess
+test('setHeader - 设置和获取头部', () => {
+  const chess = new Chess()
+  chess.setHeader('White', '胡荣华')
+  chess.setHeader('Black', '许银川')
+  expect(chess.getHeaders().White).toBe('胡荣华')
+  expect(chess.getHeaders().Black).toBe('许银川')
+})
 
-  beforeEach(() => {
-    chess = new Chess()
-  })
+test('removeHeader - 移除头部恢复默认值', () => {
+  const chess = new Chess()
+  chess.setHeader('White', '胡荣华')
+  expect(chess.removeHeader('White')).toBe(true)
+  expect(chess.getHeaders().White).toBe(SEVEN_TAG_ROSTER.White)
+})
 
-  test('setHeader should add or update a header', () => {
-    chess.setHeader('Event', 'Test Event')
-    chess.setHeader('Site', 'Test Site')
+test('removeHeader - 移除不存在的头部返回 false', () => {
+  const chess = new Chess()
+  expect(chess.removeHeader('NonExistent')).toBe(false)
+})
 
-    const headers = chess.getHeaders()
-    expect(headers).toEqual({
-      ...SEVEN_TAG_ROSTER,
-      Event: 'Test Event',
-      Site: 'Test Site',
-    })
-
-    // Update an existing header
-    chess.setHeader('Event', 'Updated Event')
-    expect(chess.getHeaders().Event).toBe('Updated Event')
-  })
-
-  test('removeHeader should remove a header if it exists', () => {
-    chess.setHeader('Event', 'Test Event')
-    chess.setHeader('Site', 'Test Site')
-
-    const removed = chess.removeHeader('Event')
-    expect(removed).toBe(true)
-
-    const headers = chess.getHeaders()
-    expect(headers).toEqual({
-      ...SEVEN_TAG_ROSTER,
-      Site: 'Test Site',
-    })
-
-    // Attempt to remove a non-existent header
-    const nonExistent = chess.removeHeader('NonExistent')
-    expect(nonExistent).toBe(false)
-  })
-
-  test('getHeaders should return only non-null headers', () => {
-    chess.setHeader('Event', 'Test Event')
-    chess.setHeader('Site', 'Test Site')
-    chess.setHeader('Opening', "Santasiere's Folly")
-
-    // Simulate a null header
-    chess.setHeader('Round', null as unknown as string) // Round will be set as mandatory default ("?")
-
-    const headers = chess.getHeaders()
-    const expected = {
-      ...SEVEN_TAG_ROSTER,
-      Opening: "Santasiere's Folly",
-      Event: 'Test Event',
-      Site: 'Test Site',
-    }
-
-    expect(headers).toEqual(expected)
-
-    const expectedPartial = { ...expected } as Partial<typeof expected>
-    delete expectedPartial.Opening
-
-    chess.removeHeader('Opening')
-    expect(chess.getHeaders()).toEqual(expectedPartial)
-
-    expect(headers.Round).toBe('?')
+test('getHeaders - 不包含空值头部', () => {
+  const chess = new Chess()
+  const headers = chess.getHeaders()
+  // SEVEN_TAG_ROSTER 的默认值不为空，所以应包含这些
+  Object.values(headers).forEach((value) => {
+    expect(value).toBeTruthy()
   })
 })

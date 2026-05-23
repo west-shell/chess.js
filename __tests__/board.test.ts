@@ -1,140 +1,42 @@
+// 棋盘数组测试
 import { Chess } from '../src/chess'
 import { describe, expect, it } from 'vitest'
 
-describe('Board Tests', () => {
-  const tests = [
-    {
-      fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
-      board: [
-        [
-          { square: 'a8', type: 'r', color: 'b' },
-          { square: 'b8', type: 'n', color: 'b' },
-          { square: 'c8', type: 'b', color: 'b' },
-          { square: 'd8', type: 'q', color: 'b' },
-          { square: 'e8', type: 'k', color: 'b' },
-          { square: 'f8', type: 'b', color: 'b' },
-          { square: 'g8', type: 'n', color: 'b' },
-          { square: 'h8', type: 'r', color: 'b' },
-        ],
-        [
-          { square: 'a7', type: 'p', color: 'b' },
-          { square: 'b7', type: 'p', color: 'b' },
-          { square: 'c7', type: 'p', color: 'b' },
-          { square: 'd7', type: 'p', color: 'b' },
-          { square: 'e7', type: 'p', color: 'b' },
-          { square: 'f7', type: 'p', color: 'b' },
-          { square: 'g7', type: 'p', color: 'b' },
-          { square: 'h7', type: 'p', color: 'b' },
-        ],
-        [null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null],
-        [null, null, null, null, null, null, null, null],
-        [
-          { square: 'a2', type: 'p', color: 'w' },
-          { square: 'b2', type: 'p', color: 'w' },
-          { square: 'c2', type: 'p', color: 'w' },
-          { square: 'd2', type: 'p', color: 'w' },
-          { square: 'e2', type: 'p', color: 'w' },
-          { square: 'f2', type: 'p', color: 'w' },
-          { square: 'g2', type: 'p', color: 'w' },
-          { square: 'h2', type: 'p', color: 'w' },
-        ],
-        [
-          { square: 'a1', type: 'r', color: 'w' },
-          { square: 'b1', type: 'n', color: 'w' },
-          { square: 'c1', type: 'b', color: 'w' },
-          { square: 'd1', type: 'q', color: 'w' },
-          { square: 'e1', type: 'k', color: 'w' },
-          { square: 'f1', type: 'b', color: 'w' },
-          { square: 'g1', type: 'n', color: 'w' },
-          { square: 'h1', type: 'r', color: 'w' },
-        ],
-      ],
-    },
-    // checkmate
-    {
-      fen: 'r3k2r/ppp2p1p/2n1p1p1/8/2B2P1q/2NPb1n1/PP4PP/R2Q3K w kq - 0 8',
-      board: [
-        [
-          { square: 'a8', type: 'r', color: 'b' },
-          null,
-          null,
-          null,
-          { square: 'e8', type: 'k', color: 'b' },
-          null,
-          null,
-          { square: 'h8', type: 'r', color: 'b' },
-        ],
-        [
-          { square: 'a7', type: 'p', color: 'b' },
-          { square: 'b7', type: 'p', color: 'b' },
-          { square: 'c7', type: 'p', color: 'b' },
-          null,
-          null,
-          { square: 'f7', type: 'p', color: 'b' },
-          null,
-          { square: 'h7', type: 'p', color: 'b' },
-        ],
-        [
-          null,
-          null,
-          { square: 'c6', type: 'n', color: 'b' },
-          null,
-          { square: 'e6', type: 'p', color: 'b' },
-          null,
-          { square: 'g6', type: 'p', color: 'b' },
-          null,
-        ],
-        [null, null, null, null, null, null, null, null],
-        [
-          null,
-          null,
-          { square: 'c4', type: 'b', color: 'w' },
-          null,
-          null,
-          { square: 'f4', type: 'p', color: 'w' },
-          null,
-          { square: 'h4', type: 'q', color: 'b' },
-        ],
-        [
-          null,
-          null,
-          { square: 'c3', type: 'n', color: 'w' },
-          { square: 'd3', type: 'p', color: 'w' },
-          { square: 'e3', type: 'b', color: 'b' },
-          null,
-          { square: 'g3', type: 'n', color: 'b' },
-          null,
-        ],
-        [
-          { square: 'a2', type: 'p', color: 'w' },
-          { square: 'b2', type: 'p', color: 'w' },
-          null,
-          null,
-          null,
-          null,
-          { square: 'g2', type: 'p', color: 'w' },
-          { square: 'h2', type: 'p', color: 'w' },
-        ],
-        [
-          { square: 'a1', type: 'r', color: 'w' },
-          null,
-          null,
-          { square: 'd1', type: 'q', color: 'w' },
-          null,
-          null,
-          null,
-          { square: 'h1', type: 'k', color: 'w' },
-        ],
-      ],
-    },
-  ]
+describe('棋盘数组', () => {
+  it('初始局面返回 10 行 9 列', () => {
+    const chess = new Chess()
+    const board = chess.board()
 
-  tests.forEach(({ fen, board }) => {
-    it('Board - ' + fen, () => {
-      const chess = new Chess(fen)
-      expect(chess.board()).toEqual(board)
-    })
+    // 10 行
+    expect(board.length).toBe(10)
+    // 每行 9 列
+    board.forEach((row) => expect(row.length).toBe(9))
+  })
+
+  it('初始局面的棋子位置正确', () => {
+    const chess = new Chess()
+    const board = chess.board()
+
+    // 第 0 行（红方底线 rank 0）
+    expect(board[9][0]).toEqual({ square: 'a0', type: 'r', color: 'w' })
+    expect(board[9][4]).toEqual({ square: 'e0', type: 'k', color: 'w' })
+
+    // 第 9 行（黑方底线 rank 9）
+    expect(board[0][0]).toEqual({ square: 'a9', type: 'r', color: 'b' })
+    expect(board[0][4]).toEqual({ square: 'e9', type: 'k', color: 'b' })
+
+    // 空行（第 4 行，河界）
+    expect(board[4].every((sq) => sq === null)).toBe(true)
+  })
+
+  it('移动后棋盘更新', () => {
+    const chess = new Chess()
+    chess.move('b0c2')
+    const board = chess.board()
+
+    // b0 应该是空了
+    expect(board[9][1]).toBeNull()
+    // c2 应该有马
+    expect(board[7][2]).toEqual({ square: 'c2', type: 'h', color: 'w' })
   })
 })

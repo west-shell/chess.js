@@ -1,64 +1,29 @@
+// FEN 序列化和反序列化测试
 import { Chess } from '../src/chess'
 import { describe, expect, it, test } from 'vitest'
 
-describe('.load() / .fen() should be symmetric', () => {
+describe('load() / fen() 对称性测试', () => {
   const validPositions = [
-    'k7/8/8/8/8/8/8/7K w - - 0 1',
-    'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
-    'rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1',
-    '1nbqkbn1/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/1NBQKBN1 b - - 1 2',
+    'rheakaehr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RHEAKAEHR w - - 0 1',
+    'rheakaehr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RHEAKAEHR b - - 0 1',
+    '4k4/9/9/9/9/9/9/9/9/4K4 w - - 0 1',
+    '4k4/9/9/9/9/9/9/9/9/4K4 w - - 0 1',
   ]
 
   const chess = new Chess()
 
   validPositions.forEach((fen) => {
-    it('fen - symmetry - ' + fen, () => {
+    it('fen 对称性 - ' + fen.substring(0, 20) + '...', () => {
       expect(() => chess.load(fen)).not.toThrow()
       expect(chess.fen()).toEqual(fen)
     })
   })
 })
 
-test('fen - ep square present only if en passant is legal (legal)', () => {
-  const chess = new Chess('4k3/8/8/8/5p2/8/4P3/4K3 w - - 0 1')
-  chess.move('e4')
-  expect(chess.fen()).toEqual('4k3/8/8/8/4Pp2/8/8/4K3 b - e3 0 1')
-})
-
-test('fen - ep square only if en passant is legal (illegal - pinned) - #1)', () => {
-  const chess = new Chess('5k2/8/8/8/5p2/8/4P3/4KR2 w - - 0 1')
-  chess.move('e4')
-  expect(chess.fen()).toEqual('5k2/8/8/8/4Pp2/8/8/4KR2 b - - 0 1')
-})
-
-test('fen - ep square only if en passant is legal (illegal - pinned - #2)', () => {
-  // black queen pins the ep pawn, making ep illegal (submitted by @ajax333221)
-  const chess = new Chess(
-    'rnb1kbn1/p1p1pp2/PpPp2qr/5Pp1/8/R1P4p/1PK1P1PP/1NBQ1BNR b - - 0 1',
-  )
-  chess.move('e5')
-  expect(chess.fen()).toEqual(
-    'rnb1kbn1/p1p2p2/PpPp2qr/4pPp1/8/R1P4p/1PK1P1PP/1NBQ1BNR w - - 0 2',
-  )
-})
-
-test('fen - allow EP square to be included by option (pinned)', () => {
-  // black queen pins the ep pawn, making ep illegal (submitted by @ajax333221)
-  const chess = new Chess(
-    'rnb1kbn1/p1p1pp2/PpPp2qr/5Pp1/8/R1P4p/1PK1P1PP/1NBQ1BNR b - - 0 1',
-  )
-  chess.move('e5')
-  expect(chess.fen({ forceEnpassantSquare: true })).toEqual(
-    'rnb1kbn1/p1p2p2/PpPp2qr/4pPp1/8/R1P4p/1PK1P1PP/1NBQ1BNR w - e6 0 2',
-  )
-})
-
-test('fen - allow EP square to be included by option (no capturing pawn)`', () => {
-  // GitHub Issue #544
+test('fen - 走一步后 FEN 正确更新', () => {
   const chess = new Chess()
-  chess.move('h4')
-
-  expect(chess.fen({ forceEnpassantSquare: true })).toEqual(
-    'rnbqkbnr/pppppppp/8/8/7P/8/PPPPPPP1/RNBQKBNR b KQkq h3 0 1',
+  chess.move('b0c2')
+  expect(chess.fen()).toBe(
+    'rheakaehr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1CH4C1/9/R1EAKAEHR b - - 1 1',
   )
 })

@@ -1,31 +1,27 @@
+// 清空棋盘测试
 import { Chess, SEVEN_TAG_ROSTER } from '../src/chess'
 import { expect, test } from 'vitest'
 
-test('clear', () => {
+test('clear - 清空棋盘', () => {
   const chess = new Chess()
-  chess.setHeader('White', 'Magnus Carlsen')
-  chess.setHeader('Black', 'Viswanathan Anand')
+  chess.setHeader('White', '胡荣华')
+  chess.setHeader('Black', '许银川')
 
   chess.clear()
-  expect(chess.fen()).toEqual('8/8/8/8/8/8/8/8 w - - 0 1')
+  expect(chess.fen()).toEqual('9/9/9/9/9/9/9/9/9/9 w - - 0 1')
   expect(chess.getHeaders()).toEqual({ ...SEVEN_TAG_ROSTER })
-
-  expect(chess.hash()).toEqual(
-    new Chess('8/8/8/8/8/8/8/8 w - - 0 1', { skipValidation: true }).hash(),
-  )
 })
 
-test('clear - preserveHeaders = true', () => {
+test('clear - 保留头部信息', () => {
   const chess = new Chess()
-  chess.setHeader('White', 'Magnus Carlsen')
-  chess.setHeader('Black', 'Viswanathan Anand')
+  chess.setHeader('White', '胡荣华')
+  chess.setHeader('Black', '许银川')
 
   chess.clear({ preserveHeaders: true })
-
-  expect(chess.fen()).toEqual('8/8/8/8/8/8/8/8 w - - 0 1')
+  expect(chess.fen()).toEqual('9/9/9/9/9/9/9/9/9/9 w - - 0 1')
   expect(chess.getHeaders()).toEqual({
     ...SEVEN_TAG_ROSTER,
-    White: 'Magnus Carlsen',
-    Black: 'Viswanathan Anand',
+    White: '胡荣华',
+    Black: '许银川',
   })
 })

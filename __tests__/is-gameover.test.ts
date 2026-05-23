@@ -1,17 +1,30 @@
+// 对局结束检测测试
 import { Chess } from '../src/chess'
 import { expect, test } from 'vitest'
 
-test('isGameOver - works - stalemate', () => {
-  const chess = new Chess('8/8/5k2/p4p1p/P4K1P/1r6/8/8 w - - 0 2')
+test('isGameOver - 初始局面未结束', () => {
+  const chess = new Chess()
+  expect(chess.isGameOver()).toBe(false)
+})
+
+test('isGameOver - 子力不足时结束', () => {
+  // 双方各只剩将（子力不足和棋）
+  const chess = new Chess('4k4/9/9/9/9/9/9/9/9/4K4 w - - 0 1')
   expect(chess.isGameOver()).toBe(true)
 })
 
-test('isGameOver - works - checkmate', () => {
-  const chess = new Chess('8/5r2/4K1q1/4p3/3k4/8/8/8 w - - 0 7')
-  expect(chess.isGameOver()).toBe(true)
-})
-
-test('isGameOver - works - insufficient material', () => {
-  const chess = new Chess('k7/8/8/8/8/8/8/7K w - - 0 1')
+test('isGameOver - 三次重复时结束', () => {
+  const chess = new Chess()
+  // 来回走子产生三次重复
+  chess.move('b0c2')
+  chess.move('b9a7')
+  chess.move('c2b0')
+  chess.move('a7b9')
+  chess.move('b0c2')
+  chess.move('b9a7')
+  chess.move('c2b0')
+  chess.move('a7b9')
+  expect(chess.isThreefoldRepetition()).toBe(true)
+  expect(chess.isDraw()).toBe(true)
   expect(chess.isGameOver()).toBe(true)
 })

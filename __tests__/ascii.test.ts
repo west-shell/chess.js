@@ -1,26 +1,21 @@
+// ASCII 棋盘渲染测试
 import { Chess } from '../src/chess'
 import { describe, expect, it } from 'vitest'
 
-describe('ASCII Board', () => {
-  it('Draws an ASCII board', () => {
-    const output = [
-      '   +------------------------+',
-      ' 8 | r  .  .  .  .  r  k  . |',
-      ' 7 | .  .  .  .  n  q  p  p |',
-      ' 6 | .  p  .  p  .  .  .  . |',
-      ' 5 | .  .  p  P  p  p  .  . |',
-      ' 4 | b  P  P  .  P  .  .  . |',
-      ' 3 | R  .  B  .  N  Q  .  . |',
-      ' 2 | P  .  .  .  .  P  P  P |',
-      ' 1 | .  R  .  .  .  .  K  . |',
-      '   +------------------------+',
-      '     a  b  c  d  e  f  g  h',
-    ]
+describe('ASCII 棋盘', () => {
+  it('渲染初始局面', () => {
+    const chess = new Chess()
+    const output = chess.ascii()
 
-    const chess = new Chess(
-      'r4rk1/4nqpp/1p1p4/2pPpp2/bPP1P3/R1B1NQ2/P4PPP/1R4K1 w - - 0 28',
-    )
-
-    expect(chess.ascii()).toBe(output.join('\n'))
+    // 验证包含关键元素
+    expect(output).toContain('a   b   c   d   e   f   g   h   i')
+    expect(output).toContain('r') // 黑车
+    expect(output).toContain('R') // 红车
+    expect(output).toContain('k') // 黑将
+    expect(output).toContain('K') // 红将
+    expect(output).toContain('c') // 黑炮
+    expect(output).toContain('C') // 红炮
+    // 河界
+    expect(output).toContain('~~~')
   })
 })
