@@ -80,8 +80,20 @@ move
 moveNumber "move number"
     = [0-9]*'.' _ [.]*
 
-san "standard algebraic notation"
-	= $(("O-O-O" / "O-O" / "0-0-0" / "0-0" / [a-zA-Z][a-zA-Z1-8-=]+) [+#]?)
+san "Chinese chess algebraic notation"
+	= $((WXF_move / ICCS_move))
+WXF_move
+	= (front_back_piece / pawn_piece / piece_col / pawn_col) [+=.x\-][0-9][+#]?
+front_back_piece
+	= [+\-][KAEHRCPkaehrcp]
+pawn_piece
+	= [1-9][Pp]
+piece_col
+	= [KAEHRCPkaehrcp][1-9]
+pawn_col
+	= [1-9]
+ICCS_move
+	= [a-i][0-9]-?[a-i][0-9]
 
 suffixAnnotation "suffix annotation"
 	= $[!?] |1..2|
