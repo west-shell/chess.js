@@ -1,0 +1,41 @@
+{
+  "name": "@weshell/chess.js",
+  "version": "1.0.0",
+  "description": "chess.js fork with Chess960 (Fischer Random) support: X-FEN/Shredder castling rights, king-takes-rook move input, and stationary-king castling",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "node test/smoke.mjs",
+    "prepublishOnly": "npm run build && npm test"
+  },
+  "keywords": [
+    "chess",
+    "chess960",
+    "fischer-random",
+    "frc",
+    "fen",
+    "pgn",
+    "x-fen",
+    "shredder"
+  ],
+  "author": "weshell",
+  "license": "BSD-2-Clause",
+  "engines": {
+    "node": ">=18"
+  }
+}
